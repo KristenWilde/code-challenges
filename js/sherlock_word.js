@@ -8,16 +8,16 @@ YES if a string  is valid, otherwise, print NO.
 
 // Examples:
 // 'abc'   YES
-// 'aabc'  YES
-// 'aaabc' NO
+// 'abcc'  YES
+// 'abccc' NO
 
-
+// Inefficient Solution:
 function isValid(s){
   if (allCountsEqual(s)) {
       return 'YES'
   }
   let oneRemoved;
-  for (let i = 0; i <= s.length; i++) {
+  for (let i = 0; i < s.length; i++) {
       oneRemoved = s.slice(0, i) + s.slice(i + 1)
       if (allCountsEqual(oneRemoved)) {
           return 'YES'
@@ -39,4 +39,36 @@ function letterCounts(s) {
     result[letter] = result[letter] ? result[letter] + 1 : 1;
   }
   return result
+}
+
+//Efficient Solution:
+function isValid(s){
+  const countsArr = Object.values(letterCounts(s))
+  if (allEqual(countsArr)) { 
+      return 'YES' 
+  }
+  let test;
+  for (i = 0; i < countsArr.length; i++) {
+      testCounts = countsArr.slice();
+      testCounts[i] -= 1;
+      if (allEqual(testCounts)) {
+          return 'YES'
+      }
+  }
+  return 'NO'
+}
+
+function allEqual(counts) {
+  return counts.every( el => el === counts[0] || el === 0 )
+}
+
+function letterCounts(s) {
+  counts = {};
+  let letter;
+  let uniqueCounts = [];
+  for (let i = 0; i < s.length; i++) {
+    letter = s[i];
+    counts[letter] = counts[letter] ? counts[letter] + 1 : 1;
+  }
+  return counts
 }
